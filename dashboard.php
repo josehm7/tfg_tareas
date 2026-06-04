@@ -57,8 +57,8 @@ if ($_SESSION['usuario_rol'] != 'admin') {
         <a href="estadisticas.php" class="btn btn-info">📊 Estadísticas</a>
         <a href="exportarPDF.php" class="btn btn-secondary">📄 Exportar PDF</a>
         <?php if($_SESSION['usuario_rol'] == 'admin'): ?>
-            <a href="admin_usuarios.php" class="btn btn-dark">👥 Admin Usuarios</a>
-            <a href="admin_reportes.php" class="btn btn-danger">🚨 Moderación</a>
+            <a href="adminUsuario.php" class="btn btn-dark">👥 Admin Usuarios</a>
+            <a href="adminReportes.php" class="btn btn-danger">🚨 Moderación</a>
         <?php endif; ?>
     </div>
 </div>

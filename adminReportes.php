@@ -105,7 +105,7 @@ $usuarios_advertidos = $stmt->fetchAll();
                                     <td><span class="badge bg-danger"><?php echo $usuario['advertencias_count']; ?></span></td>
                                     <td><?php echo $usuario['total_tareas']; ?></td>
                                     <td>
-                                        <a href="admin_usuarios.php?eliminar=<?php echo $usuario['id']; ?>" 
+                                        <a href="adminUsuario.php?eliminar=<?php echo $usuario['id']; ?>" 
                                            class="btn btn-sm btn-danger" 
                                            onclick="return confirm('¿Eliminar este usuario y todas sus tareas?')">🗑️</a>
                                     </td>
