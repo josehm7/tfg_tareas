@@ -6,6 +6,8 @@
     <title>TaskFlow - Gestor de Tareas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0d6efd">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -13,8 +15,18 @@
             <a class="navbar-brand" href="dashboard.php">✅ TaskFlow</a>
             <?php if(isset($_SESSION['usuario_id'])): ?>
                 <div class="navbar-nav ms-auto">
-                    <span class="nav-link text-white">Hola, <?php echo htmlspecialchars($_SESSION['usuario_nombre']); ?></span>
+                    <span class="nav-link text-white">
+                        Hola, <?php echo htmlspecialchars($_SESSION['usuario_nombre']); ?>
+                        <?php if($_SESSION['usuario_rol'] == 'admin'): ?>
+                            <span class="badge bg-danger">Admin</span>
+                        <?php endif; ?>
+                    </span>
+                    <a class="nav-link" href="estadisticas.php">📊 Estadísticas</a>
+                    <a class="nav-link" href="exportarPDF.php">📄 PDF</a>
                     <a class="nav-link" href="perfil.php">👤 Mi Perfil</a>
+                    <?php if($_SESSION['usuario_rol'] == 'admin'): ?>
+                        <a class="nav-link" href="admin_usuarios.php">👥 Admin</a>
+                    <?php endif; ?>
                     <a class="nav-link" href="logout.php">Cerrar sesión</a>
                 </div>
             <?php endif; ?>

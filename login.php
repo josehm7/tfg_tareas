@@ -1,5 +1,6 @@
 <?php
 require_once 'config/database.php';
+require_once 'includes/functions.php';
 
 $error = '';
 
@@ -7,13 +8,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
     
-    $stmt = $pdo->prepare("SELECT id, nombre, password FROM usuarios WHERE email = ?");
+    $stmt = $pdo->prepare("SELECT id, nombre, password, rol FROM usuarios WHERE email = ?");
     $stmt->execute([$email]);
     $usuario = $stmt->fetch();
     
     if ($usuario && password_verify($password, $usuario['password'])) {
         $_SESSION['usuario_id'] = $usuario['id'];
         $_SESSION['usuario_nombre'] = $usuario['nombre'];
+        $_SESSION['usuario_rol'] = $usuario['rol'];  // ← NUEVO: guardar el rol
+        registrarLog($pdo, $usuario['id'], "Inicio de sesión");
         header('Location: dashboard.php');
         exit;
     } else {

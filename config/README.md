@@ -29,3 +29,17 @@ Antes de instalar el proyecto, asegúrate de tener:
 
 ```bash
 git clone https://github.com/josehm7/tfg_tareas.git
+
+
+## 👥 Roles de usuario
+
+| Rol | Permisos |
+|-----|----------|
+| **Usuario** | Ver, crear, editar y eliminar sus propias tareas |
+| **Administrador** | Ver todas las tareas de todos los usuarios, gestionar usuarios (cambiar roles, eliminar usuarios) |
+
+### Credenciales de administrador (por defecto)
+
+| Email | Contraseña |
+|-------|------------|
+| admin@taskflow.com | password |

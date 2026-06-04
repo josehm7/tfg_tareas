@@ -1,5 +1,6 @@
 <?php
 require_once 'config/database.php';
+require_once 'includes/functions.php';
 
 $error = '';
 $success = '';
@@ -23,9 +24,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $error = "El email ya está registrado";
         } else {
             $hashed = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)");
+            // NUEVO: asignar rol 'usuario' por defecto
+            $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, 'usuario')");
             if ($stmt->execute([$nombre, $email, $hashed])) {
                 $success = "Registro exitoso. <a href='login.php'>Inicia sesión aquí</a>";
+                
+                $cuerpo = "<h1>Bienvenido a TaskFlow</h1>
+                           <p>Hola $nombre,</p>
+                           <p>Tu cuenta ha sido creada exitosamente con rol de USUARIO.</p>
+                           <a href='http://localhost/tfg_tareas/login.php'>Iniciar sesión</a>";
+                enviarEmail($email, $nombre, "Bienvenido a TaskFlow", $cuerpo);
             } else {
                 $error = "Error al registrar";
             }
