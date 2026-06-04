@@ -58,6 +58,7 @@ if ($_SESSION['usuario_rol'] != 'admin') {
         <a href="exportarPDF.php" class="btn btn-secondary">📄 Exportar PDF</a>
         <?php if($_SESSION['usuario_rol'] == 'admin'): ?>
             <a href="admin_usuarios.php" class="btn btn-dark">👥 Admin Usuarios</a>
+            <a href="admin_reportes.php" class="btn btn-danger">🚨 Moderación</a>
         <?php endif; ?>
     </div>
 </div>
@@ -104,6 +105,16 @@ if ($_SESSION['usuario_rol'] != 'admin') {
                             <div>
                                 <a href="editarTarea.php?id=<?php echo $tarea['id']; ?>" class="btn btn-sm btn-warning">✏️</a>
                                 <a href="eliminarTarea.php?id=<?php echo $tarea['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirmarEliminar()">🗑️</a>
+                                <?php if($_SESSION['usuario_rol'] == 'admin'): ?>
+                                    <button type="button" class="btn btn-sm btn-outline-warning" 
+                                            onclick="denunciarTarea(<?php echo $tarea['id']; ?>, '<?php echo htmlspecialchars($tarea['titulo']); ?>')">
+                                        🚨
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" 
+                                            onclick="advertirUsuario(<?php echo $tarea['usuario_id']; ?>, '<?php echo htmlspecialchars($tarea['usuario_nombre'] ?? 'Usuario'); ?>')">
+                                        ⚠️
+                                    </button>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <p class="card-text"><?php echo nl2br(htmlspecialchars($tarea['descripcion'])); ?></p>
@@ -126,5 +137,46 @@ if ($_SESSION['usuario_rol'] != 'admin') {
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
+
+<script>
+function denunciarTarea(tareaId, titulo) {
+    let motivo = prompt("Motivo de la denuncia para la tarea: " + titulo);
+    if (motivo && motivo.trim() !== "") {
+        fetch('admin_denunciar.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'tarea_id=' + tareaId + '&motivo=' + encodeURIComponent(motivo)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("✅ Tarea denunciada correctamente");
+                location.reload();
+            } else {
+                alert("❌ Error: " + data.error);
+            }
+        });
+    }
+}
+
+function advertirUsuario(usuarioId, nombre) {
+    let motivo = prompt("Motivo de la advertencia para el usuario: " + nombre);
+    if (motivo && motivo.trim() !== "") {
+        fetch('admin_avisar.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'usuario_id=' + usuarioId + '&motivo=' + encodeURIComponent(motivo)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("✅ Advertencia enviada al usuario");
+            } else {
+                alert("❌ Error: " + data.error);
+            }
+        });
+    }
+}
+</script>
 
 <?php include 'includes/footer.php'; ?>

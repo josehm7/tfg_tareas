@@ -26,6 +26,7 @@
                     <a class="nav-link" href="perfil.php">👤 Mi Perfil</a>
                     <?php if($_SESSION['usuario_rol'] == 'admin'): ?>
                         <a class="nav-link" href="admin_usuarios.php">👥 Admin</a>
+                        <a class="nav-link" href="admin_reportes.php">🚨 Moderación</a>
                     <?php endif; ?>
                     <a class="nav-link" href="logout.php">Cerrar sesión</a>
                 </div>

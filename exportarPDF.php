@@ -1,13 +1,12 @@
 <?php
 require_once 'config/database.php';
-require_once 'vendor/autoload.php';
-
-use TCPDF;
 
 if (!isset($_SESSION['usuario_id'])) {
     header('Location: login.php');
     exit;
 }
+
+require_once 'vendor/tecnickcom/tcpdf/tcpdf.php';
 
 // Obtener tareas del usuario
 if ($_SESSION['usuario_rol'] == 'admin') {
@@ -27,22 +26,20 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 $pdf->SetCreator('TaskFlow');
 $pdf->SetAuthor($_SESSION['usuario_nombre']);
 $pdf->SetTitle('Mis Tareas');
-$pdf->SetHeaderData('', 0, 'TaskFlow - Gestor de Tareas', 'Usuario: ' . $_SESSION['usuario_nombre']);
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-$pdf->SetMargins(15, 25, 15);
-$pdf->SetHeaderMargin(10);
+$pdf->SetMargins(15, 20, 15);
+$pdf->SetHeaderMargin(5);
 $pdf->SetFooterMargin(10);
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 $pdf->AddPage();
 $pdf->SetFont('helvetica', '', 11);
 
 $html = '<h1 style="text-align:center">Mis Tareas</h1>';
 $html .= '<p style="text-align:center">Usuario: ' . $_SESSION['usuario_nombre'] . '</p>';
-$html .= '<p style="text-align:center">Fecha de generación: ' . date('d/m/Y H:i:s') . '</p>';
-$html .= '<br><br>';
+$html .= '<p style="text-align:center">Fecha: ' . date('d/m/Y H:i:s') . '</p>';
+$html .= '<br>';
 
 if (empty($tareas)) {
     $html .= '<p>No hay tareas registradas.</p>';
@@ -55,18 +52,18 @@ if (empty($tareas)) {
                      <th>Fecha Límite</th>
                      <th>Prioridad</th>
                      <th>Estado</th>
-                 </tr>
+                  </tr>
               </thead>';
     $html .= '<tbody>';
     
     foreach($tareas as $tarea) {
         $prioridad_texto = match($tarea['prioridad'] ?? 'media') {
-            'alta' => '🔴 Alta',
-            'media' => '🟡 Media',
-            'baja' => '🟢 Baja',
+            'alta' => 'Alta',
+            'media' => 'Media',
+            'baja' => 'Baja',
         };
         
-        $estado_texto = $tarea['estado'] == 'completada' ? '✅ Completada' : '⏳ Pendiente';
+        $estado_texto = $tarea['estado'] == 'completada' ? 'Completada' : 'Pendiente';
         
         $html .= '<tr>';
         $html .= '<td>' . htmlspecialchars($tarea['titulo']) . '</td>';
@@ -76,7 +73,6 @@ if (empty($tareas)) {
         $html .= '<td>' . $estado_texto . '</td>';
         $html .= '</tr>';
         
-        // Si es admin, mostrar el usuario
         if ($_SESSION['usuario_rol'] == 'admin' && isset($tarea['usuario_nombre'])) {
             $html .= '<tr style="background-color:#f0f0f0;">';
             $html .= '<td colspan="5"><small>👤 Usuario: ' . htmlspecialchars($tarea['usuario_nombre']) . '</small></td>';
@@ -84,9 +80,10 @@ if (empty($tareas)) {
         }
     }
     
-    $html .= '</tbody></table>';
+    $html .= '</tbody>';
+    $html .= '</table>';
 }
 
 $pdf->writeHTML($html, true, false, true, false, '');
-$pdf->Output('mis_tareas_' . date('Ymd_His') . '.pdf', 'D');
+$pdf->Output('mis_tareas.pdf', 'D');
 ?>
