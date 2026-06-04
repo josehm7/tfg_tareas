@@ -23,9 +23,9 @@ $tareas = $stmt->fetchAll();
 
 // Crear PDF
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-$pdf->SetCreator('TaskFlow');
+$pdf->SetCreator('Gestión de Tareas');
 $pdf->SetAuthor($_SESSION['usuario_nombre']);
-$pdf->SetTitle('Mis Tareas');
+$pdf->SetTitle('Gestión de Tareas - Mis Tareas');
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);

@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt = $pdo->prepare("UPDATE usuarios SET advertencias_count = advertencias_count + 1 WHERE id = ?");
     $stmt->execute([$usuario_id]);
     
-    $asunto = "⚠️ AVISO IMPORTANTE - TaskFlow";
+    $asunto = "⚠️ AVISO IMPORTANTE - Gestión de tareas";
     $cuerpo = "
         <h1>Has recibido una advertencia</h1>
         <p>Hola {$usuario['nombre']},</p>
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <p><strong>Motivo:</strong> {$motivo}</p>
         <p>Por favor, revisa tus tareas y asegúrate de cumplir con las normas de la comunidad.</p>
         <hr>
-        <p>TaskFlow - Administración</p>
+        <p>Gestión de Tareas - Administración</p>
     ";
     
     enviarEmail($usuario['email'], $usuario['nombre'], $asunto, $cuerpo);

@@ -14,7 +14,7 @@ function enviarEmail($destinatario, $nombre, $asunto, $cuerpo) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = $_ENV['SMTP_PORT'] ?? 587;
         
-        $mail->setFrom($_ENV['SMTP_USER'] ?? 'noreply@taskflow.com', 'TaskFlow');
+        $mail->setFrom($_ENV['SMTP_USER'] ?? 'noreply@gestiontareas.com', 'Gestión de Tareas');
         $mail->addAddress($destinatario, $nombre);
         
         $mail->isHTML(true);

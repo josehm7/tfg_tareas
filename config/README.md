@@ -40,6 +40,6 @@ git clone https://github.com/josehm7/tfg_tareas.git
 
 ### Credenciales de administrador (por defecto)
 
-| Email | Contraseña |
-|-------|------------|
-| admin@taskflow.com | password |
+| Email              | Contraseña |
+|--------------------|------------|
+| admin@gmail.com    | 789102     |
