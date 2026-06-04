@@ -142,7 +142,7 @@ if ($_SESSION['usuario_rol'] != 'admin') {
 function denunciarTarea(tareaId, titulo) {
     let motivo = prompt("Motivo de la denuncia para la tarea: " + titulo);
     if (motivo && motivo.trim() !== "") {
-        fetch('admin_denunciar.php', {
+        fetch('adminDenunciar.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'tarea_id=' + tareaId + '&motivo=' + encodeURIComponent(motivo)
@@ -162,7 +162,7 @@ function denunciarTarea(tareaId, titulo) {
 function advertirUsuario(usuarioId, nombre) {
     let motivo = prompt("Motivo de la advertencia para el usuario: " + nombre);
     if (motivo && motivo.trim() !== "") {
-        fetch('admin_avisar.php', {
+        fetch('adminAvisar.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'usuario_id=' + usuarioId + '&motivo=' + encodeURIComponent(motivo)
