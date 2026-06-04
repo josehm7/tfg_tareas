@@ -11,26 +11,25 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard.php">Gestión de tareas</a>
-            <?php if(isset($_SESSION['usuario_id'])): ?>
-                <div class="navbar-nav ms-auto">
-                    <span class="nav-link text-white">
-                        Hola, <?php echo htmlspecialchars($_SESSION['usuario_nombre']); ?>
-                        <?php if($_SESSION['usuario_rol'] == 'admin'): ?>
-                            <span class="badge bg-danger">Admin</span>
-                        <?php endif; ?>
-                    </span>
-                    <a class="nav-link" href="estadisticas.php">📊 Estadísticas</a>
-                    <a class="nav-link" href="exportarPDF.php">📄 PDF</a>
-                    <a class="nav-link" href="perfil.php">👤 Mi Perfil</a>
+    <div class="container">
+        <a class="navbar-brand" href="dashboard.php">✅ Gestión de Tareas</a>
+        <?php if(isset($_SESSION['usuario_id'])): ?>
+            <div class="navbar-nav ms-auto">
+                <span class="nav-link text-white">
+                    Hola, <?php echo htmlspecialchars($_SESSION['usuario_nombre']); ?>
                     <?php if($_SESSION['usuario_rol'] == 'admin'): ?>
-                        <a class="nav-link" href="adminUsuario.php">👥 Admin</a>
-                        <a class="nav-link" href="adminReportes.php">🚨 Moderación</a>
+                        <span class="badge bg-danger">Admin</span>
                     <?php endif; ?>
-                    <a class="nav-link" href="logout.php">Cerrar sesión</a>
-                </div>
-            <?php endif; ?>
-        </div>
-    </nav>
+                </span>
+                <a class="nav-link" href="estadisticas.php">📊 Estadísticas</a>
+                <a class="nav-link" href="perfil.php">👤 Mi Perfil</a>
+                <?php if($_SESSION['usuario_rol'] == 'admin'): ?>
+                    <a class="nav-link" href="adminUsuario.php">👥 Admin</a>
+                    <a class="nav-link" href="adminReportes.php">🚨 Moderación</a>
+                <?php endif; ?>
+                <a class="nav-link" href="logout.php">Cerrar sesión</a>
+            </div>
+        <?php endif; ?>
+    </div>
+</nav>
     <div class="container mt-4">
