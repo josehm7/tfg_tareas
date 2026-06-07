@@ -25,7 +25,7 @@ $tareas = $stmt->fetchAll();
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 $pdf->SetCreator('Gestión de Tareas');
 $pdf->SetAuthor($_SESSION['usuario_nombre']);
-$pdf->SetTitle('Gestión de Tareas - Mis Tareas');
+$pdf->SetTitle('Mis Tareas');
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -51,8 +51,11 @@ if (empty($tareas)) {
                      <th>Descripción</th>
                      <th>Fecha Límite</th>
                      <th>Prioridad</th>
-                     <th>Estado</th>
-                  </tr>
+                     <th>Estado</th>';
+    if ($_SESSION['usuario_rol'] == 'admin') {
+        $html .= '<th>Usuario</th>';
+    }
+    $html .= '</tr>
               </thead>';
     $html .= '<tbody>';
     
@@ -71,13 +74,10 @@ if (empty($tareas)) {
         $html .= '<td>' . ($tarea['fecha_limite'] ?? 'Sin fecha') . '</td>';
         $html .= '<td>' . $prioridad_texto . '</td>';
         $html .= '<td>' . $estado_texto . '</td>';
-        $html .= '</tr>';
-        
         if ($_SESSION['usuario_rol'] == 'admin' && isset($tarea['usuario_nombre'])) {
-            $html .= '<tr style="background-color:#f0f0f0;">';
-            $html .= '<td colspan="5"><small>👤 Usuario: ' . htmlspecialchars($tarea['usuario_nombre']) . '</small></td>';
-            $html .= '</tr>';
+            $html .= '<td>' . htmlspecialchars($tarea['usuario_nombre']) . '</td>';
         }
+        $html .= '</tr>';
     }
     
     $html .= '</tbody>';
