@@ -12,7 +12,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-        <a class="navbar-brand" href="dashboard.php">✅ Gestión de Tareas</a>
+        <a class="navbar-brand" href="dashboard.php">Gestión de Tareas</a>
         <?php if(isset($_SESSION['usuario_id'])): ?>
             <div class="navbar-nav ms-auto">
                 <span class="nav-link text-white">
