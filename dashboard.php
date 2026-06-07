@@ -7,17 +7,32 @@ if (!isset($_SESSION['usuario_id'])) {
     exit;
 }
 
-// Si es admin, ve todas las tareas. Si no, solo las suyas
+// Si es admin, ve todas las tareas con filtro de búsqueda
 if ($_SESSION['usuario_rol'] == 'admin') {
-    $stmt = $pdo->prepare("SELECT tareas.*, usuarios.nombre as usuario_nombre 
-                           FROM tareas 
-                           LEFT JOIN usuarios ON tareas.usuario_id = usuarios.id 
-                           ORDER BY CASE prioridad 
-                               WHEN 'alta' THEN 1 
-                               WHEN 'media' THEN 2 
-                               WHEN 'baja' THEN 3 
-                           END, fecha_limite ASC, fecha_creacion DESC");
-    $stmt->execute();
+    $busqueda = $_GET['buscar'] ?? '';
+    
+    if (!empty($busqueda)) {
+        $stmt = $pdo->prepare("SELECT tareas.*, usuarios.nombre as usuario_nombre 
+                               FROM tareas 
+                               LEFT JOIN usuarios ON tareas.usuario_id = usuarios.id 
+                               WHERE tareas.titulo LIKE :busqueda OR usuarios.nombre LIKE :busqueda
+                               ORDER BY CASE prioridad 
+                                   WHEN 'alta' THEN 1 
+                                   WHEN 'media' THEN 2 
+                                   WHEN 'baja' THEN 3 
+                               END, fecha_limite ASC, fecha_creacion DESC");
+        $stmt->execute(['busqueda' => "%$busqueda%"]);
+    } else {
+        $stmt = $pdo->prepare("SELECT tareas.*, usuarios.nombre as usuario_nombre 
+                               FROM tareas 
+                               LEFT JOIN usuarios ON tareas.usuario_id = usuarios.id 
+                               ORDER BY CASE prioridad 
+                                   WHEN 'alta' THEN 1 
+                                   WHEN 'media' THEN 2 
+                                   WHEN 'baja' THEN 3 
+                               END, fecha_limite ASC, fecha_creacion DESC");
+        $stmt->execute();
+    }
 } else {
     $stmt = $pdo->prepare("SELECT * FROM tareas WHERE usuario_id = ? 
                            ORDER BY CASE prioridad 
@@ -60,17 +75,31 @@ if ($_SESSION['usuario_rol'] != 'admin') {
 
 <!-- Filtros y buscador -->
 <div class="row mb-4">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="btn-group" role="group">
             <button type="button" class="btn btn-outline-primary" onclick="filtrarTareas('todas')">Todas</button>
             <button type="button" class="btn btn-outline-success" onclick="filtrarTareas('pendiente')">Pendientes</button>
             <button type="button" class="btn btn-outline-secondary" onclick="filtrarTareas('completadas')">Completadas</button>
         </div>
     </div>
-    <div class="col-md-6">
-        <input type="text" id="buscador" class="form-control" placeholder="🔍 Buscar tarea por título...">
+    <div class="col-md-8">
+        <form method="GET" action="" class="d-flex gap-2">
+            <input type="text" name="buscar" id="buscador" class="form-control" 
+                   placeholder="🔍 Buscar por título o nombre de usuario..." 
+                   value="<?php echo htmlspecialchars($_GET['buscar'] ?? ''); ?>">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+            <?php if(!empty($_GET['buscar'])): ?>
+                <a href="dashboard.php" class="btn btn-secondary">Limpiar</a>
+            <?php endif; ?>
+        </form>
     </div>
 </div>
+
+<?php if(!empty($_GET['buscar'])): ?>
+    <div class="alert alert-info mb-3">
+        Resultados para: <strong><?php echo htmlspecialchars($_GET['buscar']); ?></strong>
+    </div>
+<?php endif; ?>
 
 <?php if(empty($tareas)): ?>
     <div class="alert alert-info">No hay tareas. ¡Crea tu primera tarea!</div>
@@ -171,6 +200,24 @@ function advertirUsuario(usuarioId, nombre) {
             }
         });
     }
+}
+
+function filtrarTareas(estado) {
+    const tareas = document.querySelectorAll('.col-md-6');
+    tareas.forEach(tarea => {
+        const card = tarea.querySelector('.card');
+        const esCompletada = card.classList.contains('bg-light');
+        
+        if (estado === 'todas') {
+            tarea.style.display = 'block';
+        } else if (estado === 'pendiente' && esCompletada) {
+            tarea.style.display = 'none';
+        } else if (estado === 'completadas' && !esCompletada) {
+            tarea.style.display = 'none';
+        } else {
+            tarea.style.display = 'block';
+        }
+    });
 }
 </script>
 
