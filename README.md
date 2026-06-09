@@ -29,7 +29,7 @@ Antes de instalar el proyecto, asegúrate de tener:
 
 ```bash
 git clone https://github.com/josehm7/tfg_tareas.git
-
+```
 ## crea una base de datos en mysql e importa la crea cion de tablas desde el archivo sql desde la carpeta sql
 
 
