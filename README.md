@@ -30,8 +30,13 @@ Antes de instalar el proyecto, asegúrate de tener:
 ```bash
 git clone https://github.com/josehm7/tfg_tareas.git
 ```
-## crea una base de datos en mysql e importa la crea cion de tablas desde el archivo sql desde la carpeta sql
+## Crea una base de datos en mysql e importa la crea cion de tablas desde el archivo sql desde la carpeta sql
 
+## Despues de crear , rellena las constantes de .env
+
+## Necesitas composer intalado:  ejecuta en el directorio raiz  <code>composer install<code> 
+## Se descargaran e instalaran las librerias necesarias 
+ 
 
 ## 👥 Roles de usuario
 
