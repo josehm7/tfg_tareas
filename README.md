@@ -34,8 +34,8 @@ git clone https://github.com/josehm7/tfg_tareas.git
 
 ## Despues de crear , rellena las constantes de .env
 
-## Necesitas composer intalado:  ejecuta en el directorio raiz  <code>composer install<code> 
-## Se descargaran e instalaran las librerias necesarias 
+### Necesitas composer intalado:  ejecuta en el directorio raiz  <code>composer install<code> 
+### Se descargaran e instalaran las librerias necesarias 
  
 
 ## 👥 Roles de usuario
